@@ -3,9 +3,13 @@ package org.perscholas.springapp.controllers;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.perscholas.springapp.models.User;
+import org.perscholas.springapp.repo.UserRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,9 +24,14 @@ import java.util.List;
 public class HomeController {
   // localhost:8080/index
 
+        @Autowired
+        private UserRepo userRepo;
+
+
 
     @GetMapping("/listusers")
     public String listUser(Model model, @RequestParam("hello") int kjddk){
+
         List<User> listUsers = new ArrayList<User>();
 
         listUsers.add(new User(1,"Jafer","jafer@gmail.com"));
@@ -59,6 +68,8 @@ public class HomeController {
         }
 
         model.addAttribute("thenewuser",user);
+
+        userRepo.save(user);
         return "showdata";
     }
 
